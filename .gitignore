@@ -1,6 +1,9 @@
 # Venv
 keybert_taipy_venv
 
+# Admin folder
+admin/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

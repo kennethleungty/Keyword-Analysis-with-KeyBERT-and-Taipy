@@ -1,3 +1,4 @@
 arxiv==1.4.3
 keybert==0.7.0
 taipy==2.1.0
+ipywidgets==8.0.4

@@ -1,0 +1,5 @@
+{
+"id": "a36a9b43-8fd8-41c1-b2a3-9660514b5865",
+"config": "{\n\"TAIPY\": {\n\"root_folder\": \"./taipy/\",\n\"storage_folder\": \".data/\",\n\"clean_entities_enabled\": \"ENV[TAIPY_CLEAN_ENTITIES_ENABLED]\",\n\"repository_type\": \"filesystem\"\n},\n\"JOB\": {\n\"mode\": \"development\",\n\"max_nb_of_workers\": \"1:int\"\n},\n\"gui\": {},\n\"DATA_NODE\": {\n\"default\": {\n\"storage_type\": \"pickle\",\n\"scope\": \"SCENARIO:SCOPE\"\n}\n},\n\"TASK\": {\n\"default\": {\n\"inputs\": [],\n\"function\": null,\n\"outputs\": [],\n\"skippable\": \"False:bool\"\n}\n},\n\"PIPELINE\": {\n\"default\": {\n\"tasks\": []\n}\n},\n\"SCENARIO\": {\n\"default\": {\n\"comparators\": {},\n\"pipelines\": [],\n\"frequency\": null\n}\n}\n}",
+"creation_date": "2023-03-11T19:14:18.694042"
+}
