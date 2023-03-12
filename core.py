@@ -4,72 +4,109 @@ Author: Kenneth Leung
 Last Modified: 12 Mar 2023
 """
 
-from utils import *
-from config import *
+from functions import *
+from input import *
+import taipy as tp
 from taipy import Config, Scope
 
+# ====================
+#  Input Data Nodes
+# ====================
+# To place input values as DataNodeConfig objects
+data_query_cfg = Config.configure_data_node(id='query', default_data=QUERY)
+data_max_results_cfg = Config.configure_data_node(id='max_results', default_data=MAX_RESULTS)
+data_stop_words_cfg = Config.configure_data_node(id='stop_words', default_data=STOP_WORDS)
+data_ngram_min_cfg = Config.configure_data_node(id='ngram_min', default_data=NGRAM_MIN)
+data_ngram_max_cfg = Config.configure_data_node(id='ngram_max', default_data=NGRAM_MAX)
+data_fine_tune_cfg = Config.configure_data_node(id='fine_tune', default_data=FINE_TUNE_METHOD)
+data_diversity_cfg = Config.configure_data_node(id='diversity', default_data=DIVERSITY)
+data_top_n_cfg = Config.configure_data_node(id='top_n', default_data=TOP_N)
+
+
 # ===================
-#     Data Nodes 
+#   Key Data Nodes
 # ===================
-arxiv_search_results_cfg = Config.configure_data_node(id='search_results',
-                                                      scope=Scope.GLOBAL)
+data_arxiv_search_cfg = Config.configure_data_node(id='data_arxiv_search',
+                                                   scope=Scope.GLOBAL)
 
-raw_dataframe_cfg = Config.configure_data_node(id='df_raw',
-                                               scope=Scope.PIPELINE)
+data_raw_df_cfg = Config.configure_data_node(id='data_raw_df',
+                                             scope=Scope.PIPELINE)
 
-processed_dataframe_cfg = Config.configure_data_node(id='df_processed',
-                                                     scope=Scope.PIPELINE)
+data_processed_df_cfg = Config.configure_data_node(id='data_processed_df',
+                                                   scope=Scope.PIPELINE)
 
-keywords_dataframe_cfg = Config.configure_data_node(id='df_keywords',
-                                                    scope=Scope.PIPELINE)
+data_keywords_df_cfg = Config.configure_data_node(id='data_keywords_df',
+                                                  scope=Scope.PIPELINE)
 
 # =================
 #      Tasks
 # =================
-arxiv_extraction_task_cfg = Config.configure_task(id="arxiv_api_search",
+task_arxiv_extraction_cfg = Config.configure_task(id="task_arxiv_extraction",
                                                   function=extract_arxiv,
-                                                  input=[QUERY, MAX_RESULTS],
-                                                  output=arxiv_search_results_cfg)
+                                                  input=[data_query_cfg, data_max_results_cfg],
+                                                  output=data_arxiv_search_cfg,
+                                                  skippable=True)
 
-save_in_dataframe_task_cfg = Config.configure_task(id="save_dataframe",
-                                                   function=save_in_dataframe,
-                                                   input=arxiv_search_results_cfg,
-                                                   output=raw_dataframe_cfg)
+task_save_in_df_cfg = Config.configure_task(id="task_save_in_df",
+                                            function=save_in_dataframe,
+                                            input=data_arxiv_search_cfg,
+                                            output=data_raw_df_cfg,
+                                            skippable=True)
 
-process_data_task_cfg = Config.configure_task(id='preprocess_data',
+task_process_data_cfg = Config.configure_task(id='task_process_data',
                                               function=preprocess_data,
-                                              input=raw_dataframe_cfg,
-                                              output=processed_dataframe_cfg)
+                                              input=data_raw_df_cfg,
+                                              output=data_processed_df_cfg,
+                                              skippable=True)
 
-extract_keywords_task_cfg = Config.configure_task(id='extract_keywords',
+task_extract_keywords_cfg = Config.configure_task(id='task_extract_keywords',
                                               function=run_keybert,
-                                              input=[processed_dataframe_cfg, STOP_WORDS, 
-                                                     NGRAM_MIN, NGRAM_MAX, FINE_TUNE_METHOD, 
-                                                     DIVERSITY, TOP_N],
-                                              output=keywords_dataframe_cfg)
+                                              input=[data_processed_df_cfg, 
+                                                     data_stop_words_cfg, 
+                                                     data_ngram_min_cfg, 
+                                                     data_ngram_max_cfg, 
+                                                     data_fine_tune_cfg, 
+                                                     data_diversity_cfg, 
+                                                     data_top_n_cfg],
+                                              output=data_keywords_df_cfg)
 
 
 # Also need a set of display configs (output bar chart and word cloud)
 
 # =================
-#    Pipelines
+#     Pipelines
 # =================
-
-
-def run_pipeline(query, max_results, stop_words, ngram_min, ngram_max, 
-                 fine_tune_method, diversity, top_n):
-    search = extract_arxiv(query, max_results)
-    df_raw = save_in_dataframe(search)
-    df_processed = preprocess_data(df_raw)
-    df_final = run_keybert(df_processed, stop_words, ngram_min, ngram_max,
-                           fine_tune_method, diversity, top_n)
-
-    print(df_final)
-
-
 
 # TODO: Split pipeline so that the initial extraction does not change unless number of articles change
 # Don't re-extract when other variables related to KeyBert are amended
+
+pipeline_data_prep_cfg = Config.configure_pipeline(id='pipeline_data_prep',
+                                                   task_configs=[task_arxiv_extraction_cfg,
+                                                                 task_save_in_df_cfg,
+                                                                 task_process_data_cfg,
+                                                                 ])
+
+pipeline_keyword_analysis_cfg = Config.configure_pipeline(id='pipeline_keyword_analysis',
+                                                      task_configs=[task_extract_keywords_cfg])
+
+
+
+## Execute pipeline
+if __name__ == "__main__":
+    tp.Core().run()
+
+    # Create the pipeline
+    pipeline_data_prep = tp.create_pipeline(pipeline_data_prep_cfg)
+
+    # Submit the pipeline (Execution)
+    tp.submit(pipeline_data_prep)
+
+    # Read output data from the pipeline (values from data node id attribute)
+    df = pipeline_data_prep.data_processed_df.read()
+
+    print(df)
+
+# CONTINUE FROM HERE: HOw to Link GUI to Pipeline in Core: https://docs.taipy.io/en/latest/getting_started/getting-started/step_05/ReadMe/
 
 # # Test pipeline run
 # run_pipeline(QUERY, MAX_RESULTS, STOP_WORDS, NGRAM_MIN, NGRAM_MAX, 

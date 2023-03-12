@@ -1,0 +1,19 @@
+{
+"id": "TASK_task_process_data_956e379c-a74e-4799-900d-5c04a3a4cfee",
+"owner_id": "PIPELINE_pipeline_data_prep_f48f08a0-5591-4a6e-8d35-3931f20180c9",
+"parent_ids": [
+"PIPELINE_pipeline_data_prep_f48f08a0-5591-4a6e-8d35-3931f20180c9"
+],
+"config_id": "task_process_data",
+"input_ids": [
+"DATANODE_data_raw_df_aafc90a6-df30-47b8-a589-9faf7937a321"
+],
+"function_name": "preprocess_data",
+"function_module": "functions",
+"output_ids": [
+"DATANODE_data_processed_df_c2efcbd4-5d90-466a-84af-5749ab3859ae"
+],
+"version": "a36a9b43-8fd8-41c1-b2a3-9660514b5865",
+"skippable": true,
+"properties": {}
+}

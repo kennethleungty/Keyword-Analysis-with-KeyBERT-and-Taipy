@@ -1,0 +1,17 @@
+{
+"id": "JOB_task_process_data_f7e9acab-fe1a-4b8c-a58b-593b93841047",
+"task_id": "TASK_task_process_data_956e379c-a74e-4799-900d-5c04a3a4cfee",
+"status": "<Status.COMPLETED: 7>",
+"force": false,
+"submit_id": "SUBMISSION_ac2c76c7-75a3-463d-90ee-957714d44c8c",
+"creation_date": "2023-03-12T15:37:08.156221",
+"subscribers": [
+{
+"fct_name": "_Scheduler._on_status_change",
+"fct_params": [],
+"fct_module": "taipy.core._scheduler._scheduler"
+}
+],
+"stacktrace": [],
+"version": "a36a9b43-8fd8-41c1-b2a3-9660514b5865"
+}

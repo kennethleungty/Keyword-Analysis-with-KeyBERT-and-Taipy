@@ -63,7 +63,7 @@ def run_keybert(df: pd.DataFrame,
     for i, row in df.iterrows():
         kw_model = KeyBERT(model='all-MiniLM-L6-v2')
         abstract_text = row['abstract']
-        if fine_tune_method == 'MMR':
+        if fine_tune_method.lower() == 'mmr':
             use_mmr, use_maxsum = True, False
         else:
             use_mmr, use_maxsum = False, True
