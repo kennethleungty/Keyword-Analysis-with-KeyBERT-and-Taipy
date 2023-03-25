@@ -3,6 +3,7 @@ keybert_taipy_venv
 
 # Admin folder
 admin/
+.data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
