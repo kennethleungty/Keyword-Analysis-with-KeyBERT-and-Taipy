@@ -1,7 +1,7 @@
 """
 Module Name: Frontend App with Taipy GUI
 Author: Kenneth Leung
-Last Modified: 19 Mar 2023
+Last Modified: 25 Mar 2023
 """
 # Launch app with the command: python main.py
 
@@ -36,7 +36,7 @@ def menu_fct(state, var_name: str, fct: str, var_value: list):
     navigate(state, var_value["args"][0])
 
 
-# Scenario Setup
+# ======= Scenario Setup =========
 # def create_scenario(scenario_cfg):
 #     global selected_scenario
 
@@ -65,12 +65,10 @@ def menu_fct(state, var_name: str, fct: str, var_value: list):
 #     # Update the chart when we change the scenario
 #     update_chart(state)
 
-
 # def update_predictions_dataset(state, pipeline):
 #     print("Updating predictions dataset...")
 #     state.data_processed_ = create_predictions_dataset(pipeline)
 #     state.predictions_dataset = create_predictions_dataset(pipeline)
-
 
 # def update_chart(state):
 #     # Select the right scenario and pipeline
@@ -78,7 +76,6 @@ def menu_fct(state, var_name: str, fct: str, var_value: list):
 #     pipeline = scenario.pipelines['pipeline_keyword_analysis']
 #     # Update the chart based on this pipeline
 #     state.
-
 
 
 # Run application

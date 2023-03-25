@@ -102,34 +102,3 @@ def get_keyword_value_counts(df):
     keywords_count.columns = ['keyword', 'count']
 
     return keywords_count
-
-
-
-# def set_sqlite_connection(data_path, db_name):
-#     if not os.path.exists(data_path):
-#             os.makedirs(data_path)  
-#     connection = sqlite3.connect(f"{data_path}/{db_name}.db")
-#     return connection
-
-# def create_sqlite_table(connection, table_name):
-#     cursor = connection.cursor()
-#     # Create new table in database
-#     cursor.execute(f"CREATE TABLE IF NOT EXISTS {table_name} (id TEXT PRIMARY KEY, \
-#                                                              title TEXT, \
-#                                                              date_published TEXT, \
-#                                                              abstract TEXT)"
-#                   )
-
-# def save_results_in_sqlite(connection, table_name, search):
-#     cursor = connection.cursor()   
-#     for result in search.results():
-#         entry_id = result.entry_id
-#         uid = entry_id.split('.')[-1]
-#         title = result.title
-#         date_published = result.published
-#         abstract = result.summary
-        
-#         query = f'INSERT OR REPLACE INTO {table_name}(id, title, date_published, abstract)' + \
-#                  ' VALUES(?, ?, ?, ?);'
-#         fields = (uid, title, date_published, abstract)
-#         cursor.execute(query, fields)
