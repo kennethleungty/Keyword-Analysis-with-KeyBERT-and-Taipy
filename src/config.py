@@ -6,7 +6,7 @@ Last Modified: 19 Mar 2023
 
 import yaml
 from taipy import Config, Scope
-from src.core import *
+from src.functions import *
 
 with open('config.yml') as f:
     cfg = yaml.safe_load(f)

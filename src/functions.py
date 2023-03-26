@@ -6,7 +6,6 @@ Last Modified: 19 Mar 2023
 import arxiv
 import pandas as pd
 from keybert import KeyBERT
-import taipy as tp
 import yaml
 
 with open('config.yml') as f:
@@ -25,7 +24,7 @@ def extract_arxiv(query: str):
 
 
 def save_in_dataframe(search):
-    df_raw = pd.DataFrame()
+    df = pd.DataFrame()
 
     for result in search.results():
         entry_id = result.entry_id
@@ -39,9 +38,9 @@ def save_in_dataframe(search):
                        'date_published': date_published,
                        'abstract': abstract
                     }
-        df_raw = df_raw.append(result_dict, ignore_index=True)
+        df = df.append(result_dict, ignore_index=True)
 
-    return df_raw
+    return df
 
 
 def preprocess_data(df: pd.DataFrame):
@@ -92,14 +91,10 @@ def run_keybert(df: pd.DataFrame,
     return df
 
 
-def create_and_submit_pipeline(pipeline_cfg):
-    pipeline = tp.create_pipeline(pipeline_cfg)
-    tp.submit(pipeline)
-    return pipeline
-
-
 def get_keyword_value_counts(df):
     keywords_count = pd.DataFrame(pd.Series([x for item in df['keywords'] for x in item]).value_counts()).reset_index()
     keywords_count.columns = ['keyword', 'count']
 
     return keywords_count
+
+

@@ -3,10 +3,11 @@ Module Name: Frontend App with Taipy GUI
 Author: Kenneth Leung
 Last Modified: 25 Mar 2023
 """
-# Launch app with the command: python main.py
+# Launch app with the command in CLI: python main.py
 
 from src.config import *
-from src.core import *
+from src.functions import *
+from src.utils import *
 from pages.analysis_md import *
 from pages.dataframe_md import *
 
