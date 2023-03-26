@@ -1,8 +1,9 @@
 # Define default parameters
 QUERY: 'artificial intelligence'
 MAX_ABSTRACTS: 4
+NGRAM_MIN: 1
 NGRAM_MAX: 1
-FINE_TUNE_METHOD: 'mmr' # or 'maxsum'
 TOP_N: 3
+DIVERSITY_ALGO: 'mmr' # or 'maxsum'
 DIVERSITY: 0.2 # For MMR
 NR_CANDIDATES: 20 # For MaxSum

@@ -9,8 +9,8 @@ with open('config.yml') as f:
 
 query = cfg['QUERY']
 ngram_max = cfg['NGRAM_MAX']
-fine_tune = cfg['FINE_TUNE_METHOD']
-fine_tune_options = ['mmr', 'maxsum']
+diversity_algo = cfg['DIVERSITY_ALGO']
+diversity_algo_options = ['mmr', 'maxsum']
 diversity = cfg['DIVERSITY']
 top_n = cfg['TOP_N']
 nr_candidates = cfg['NR_CANDIDATES']
@@ -39,9 +39,12 @@ This is some placeholder text
 
 <br/>
 
-<|layout|columns=1 1 1 1 1 1|gap=0px|
+<|layout|columns=1 1 1 1 1 1 1|gap=0px|
 <|
 <|{query}|input|label=Query Topic|>
+|>
+<|
+<|{ngram_min}|number|label=Min N-gram|>
 |>
 <|
 <|{ngram_max}|number|label=Max N-gram|>
@@ -53,10 +56,10 @@ This is some placeholder text
 <|{diversity}|number|label=Diversity (for MMR)|>
 |>
 <|
-<|{nr_candidates}|number|label=NR Candidates (for MaxSum)|>
+<|{nr_candidates}|number|label=Number of Candidates (for MaxSum)|>
 |>
 <|
-<|{fine_tune}|selector|lov={fine_tune_options}|dropdown|label=Fine-tune Method|>
+<|{diversity_algo}|selector|lov={diversity_algo_options}|dropdown|label=Diversity Algorithm|>
 |>
 |>
 

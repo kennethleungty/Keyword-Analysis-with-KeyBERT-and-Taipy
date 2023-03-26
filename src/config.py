@@ -16,8 +16,9 @@ with open('config.yml') as f:
 # ====================
 # To place input values as DataNodeConfig objects
 data_query_cfg = Config.configure_data_node(id='query', default_data=cfg['QUERY'])
+data_ngram_min_cfg = Config.configure_data_node(id='ngram_min', default_data=cfg['NGRAM_MIN'])
 data_ngram_max_cfg = Config.configure_data_node(id='ngram_max', default_data=cfg['NGRAM_MAX'])
-data_fine_tune_cfg = Config.configure_data_node(id='fine_tune', default_data=cfg['FINE_TUNE_METHOD'])
+data_diversity_algo_cfg = Config.configure_data_node(id='diversity_algo', default_data=cfg['DIVERSITY_ALGO'])
 data_top_n_cfg = Config.configure_data_node(id='top_n', default_data=cfg['TOP_N'])
 data_diversity_cfg = Config.configure_data_node(id='diversity', default_data=cfg['DIVERSITY'])
 data_nr_candidates_cfg = Config.configure_data_node(id='nr_candidates', default_data=cfg['NR_CANDIDATES'])
@@ -66,8 +67,9 @@ task_process_data_cfg = Config.configure_task(id='task_process_data',
 task_extract_keywords_cfg = Config.configure_task(id='task_extract_keywords',
                                                   function=run_keybert,
                                                   input=[data_processed_df_cfg, 
+                                                         data_ngram_min_cfg,
                                                          data_ngram_max_cfg, 
-                                                         data_fine_tune_cfg, 
+                                                         data_diversity_algo_cfg, 
                                                          data_top_n_cfg,
                                                          data_diversity_cfg, 
                                                          data_nr_candidates_cfg],

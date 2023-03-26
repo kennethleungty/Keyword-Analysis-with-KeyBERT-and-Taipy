@@ -54,7 +54,7 @@ def menu_fct(state, var_name: str, fct: str, var_value: list):
 #     # Change the default parameters by writing in the datanodes
 #     scenario.query.write(str(state.query))
 #     scenario.ngram_max.write(int(state.ngram_max))
-#     scenario.fine_tune.write(str(state.fine_tune))
+#     scenario.diversity_algo.write(str(state.diversity_algo))
 #     scenario.diversity.write(float(state.diversity))
 #     scenario.top_n.write(int(state.top_n))
 #     scenario.nr_candidates.write(int(state.nr_candidates))

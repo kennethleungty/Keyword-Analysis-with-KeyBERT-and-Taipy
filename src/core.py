@@ -57,8 +57,9 @@ def preprocess_data(df: pd.DataFrame):
 
 
 def run_keybert(df: pd.DataFrame, 
+                ngram_min: int,
                 ngram_max: int,
-                fine_tune_method: str, 
+                diversity_algo: str, 
                 top_n: int,
                 diversity: float, 
                 nr_candidates: int
@@ -66,13 +67,13 @@ def run_keybert(df: pd.DataFrame,
     for i, row in df.iterrows():
         kw_model = KeyBERT(model='all-MiniLM-L6-v2')
         abstract_text = row['abstract']
-        if fine_tune_method.lower() == 'mmr':
+        if diversity_algo.lower() == 'mmr':
             use_mmr, use_maxsum = True, False
-        elif fine_tune_method.lower() == 'maxsum':
+        elif diversity_algo.lower() == 'maxsum':
             use_mmr, use_maxsum = False, True
 
         kw_output = kw_model.extract_keywords(abstract_text, 
-                                    keyphrase_ngram_range=(1, ngram_max), 
+                                    keyphrase_ngram_range=(ngram_min, ngram_max), 
                                     stop_words='english',
                                     use_mmr=use_mmr, 
                                     use_maxsum=use_maxsum,
