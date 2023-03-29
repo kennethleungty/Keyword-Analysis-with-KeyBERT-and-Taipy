@@ -1,0 +1,85 @@
+[TAIPY]
+
+[DATA_NODE.query]
+scope = "SCENARIO:SCOPE"
+default_data = "artificial intelligence"
+
+[DATA_NODE.ngram_min]
+scope = "SCENARIO:SCOPE"
+default_data = "1:int"
+
+[DATA_NODE.ngram_max]
+scope = "SCENARIO:SCOPE"
+default_data = "1:int"
+
+[DATA_NODE.diversity_algo]
+scope = "SCENARIO:SCOPE"
+default_data = "mmr"
+
+[DATA_NODE.top_n]
+scope = "SCENARIO:SCOPE"
+default_data = "3:int"
+
+[DATA_NODE.diversity]
+scope = "SCENARIO:SCOPE"
+default_data = "0.2:float"
+
+[DATA_NODE.nr_candidates]
+scope = "SCENARIO:SCOPE"
+default_data = "20:int"
+
+[DATA_NODE.data_arxiv_search]
+scope = "SCENARIO:SCOPE"
+
+[DATA_NODE.data_raw_df]
+scope = "SCENARIO:SCOPE"
+
+[DATA_NODE.data_processed_df]
+scope = "SCENARIO:SCOPE"
+
+[DATA_NODE.data_keywords_df]
+scope = "SCENARIO:SCOPE"
+
+[DATA_NODE.data_keywords_count]
+scope = "SCENARIO:SCOPE"
+
+[TASK.task_arxiv_extraction]
+inputs = [ "query:SECTION",]
+function = "src.functions.extract_arxiv:function"
+outputs = [ "data_arxiv_search:SECTION",]
+skippable = "True:bool"
+
+[TASK.task_save_in_df]
+inputs = [ "data_arxiv_search:SECTION",]
+function = "src.functions.save_in_dataframe:function"
+outputs = [ "data_raw_df:SECTION",]
+skippable = "True:bool"
+
+[TASK.task_process_data]
+inputs = [ "data_raw_df:SECTION",]
+function = "src.functions.preprocess_data:function"
+outputs = [ "data_processed_df:SECTION",]
+skippable = "True:bool"
+
+[TASK.task_extract_keywords]
+inputs = [ "data_processed_df:SECTION", "ngram_min:SECTION", "ngram_max:SECTION", "diversity_algo:SECTION", "top_n:SECTION", "diversity:SECTION", "nr_candidates:SECTION",]
+function = "src.functions.run_keybert:function"
+outputs = [ "data_keywords_df:SECTION",]
+skippable = "False:bool"
+
+[TASK.task_count_keywords]
+inputs = [ "data_keywords_df:SECTION",]
+function = "src.functions.get_keyword_value_counts:function"
+outputs = [ "data_keywords_count:SECTION",]
+skippable = "False:bool"
+
+[PIPELINE.pipeline_data_prep]
+tasks = [ "task_arxiv_extraction:SECTION", "task_save_in_df:SECTION", "task_process_data:SECTION",]
+
+[PIPELINE.pipeline_keyword_analysis]
+tasks = [ "task_extract_keywords:SECTION", "task_count_keywords:SECTION",]
+
+[SCENARIO.scenario]
+pipelines = [ "pipeline_data_prep:SECTION", "pipeline_keyword_analysis:SECTION",]
+
+[SCENARIO.scenario.comparators]

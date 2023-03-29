@@ -37,62 +37,20 @@ def menu_fct(state, var_name: str, fct: str, var_value: list):
     navigate(state, var_value["args"][0])
 
 
-# ======= Scenario Setup =========
-# def create_scenario(scenario_cfg):
-#     global selected_scenario
-
-#     print("Creating scenario...")
-#     scenario = tp.create_scenario(scenario_cfg)
-#     selected_scenario = scenario.id
-#     tp.submit(scenario)
-
-
-# def submit_scenario(state):
-#     print("Submitting scenario...")
-#     # Get the selected scenario: in this current step a single scenario is created then modified here.
-#     scenario = tp.get(selected_scenario)
-
-#     # Change the default parameters by writing in the datanodes
-#     scenario.query.write(str(state.query))
-#     scenario.ngram_max.write(int(state.ngram_max))
-#     scenario.diversity_algo.write(str(state.diversity_algo))
-#     scenario.diversity.write(float(state.diversity))
-#     scenario.top_n.write(int(state.top_n))
-#     scenario.nr_candidates.write(int(state.nr_candidates))
-
-#     # Execute the pipelines/code
-#     tp.submit(scenario)
-
-#     # Update the chart when we change the scenario
-#     update_chart(state)
-
-# def update_predictions_dataset(state, pipeline):
-#     print("Updating predictions dataset...")
-#     state.data_processed_ = create_predictions_dataset(pipeline)
-#     state.predictions_dataset = create_predictions_dataset(pipeline)
-
-# def update_chart(state):
-#     # Select the right scenario and pipeline
-#     scenario = tp.get(selected_scenario)
-#     pipeline = scenario.pipelines['pipeline_keyword_analysis']
-#     # Update the chart based on this pipeline
-#     state.
-
 
 # Run application
 if __name__ == "__main__":
-    global selected_scenario
-
     tp.Core().run()
 
     # Create and execute scenario
-    scenario = tp.create_scenario(scenario_cfg)
+    scenario = tp.create_scenario(scenario_cfg, name="First Scenario")
+    selected_scenario = scenario.id
     tp.submit(scenario)
+
+    scenario_selector = [(s.id, s.name) for s in tp.get_scenarios()]
 
     df = scenario.pipeline_keyword_analysis.data_keywords_df.read()
     df_keywords_count = scenario.pipeline_keyword_analysis.data_keywords_count.read()
-
-    # create_scenario(scenario_cfg)
 
     Gui(pages=pages).run(title="Taipy Demo 123", 
                          dark_mode=False, 
