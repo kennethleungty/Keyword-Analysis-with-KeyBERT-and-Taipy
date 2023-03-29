@@ -24,22 +24,10 @@ def extract_arxiv(query: str):
 
 
 def save_in_dataframe(search):
-    df = pd.DataFrame()
-
-    for result in search.results():
-        entry_id = result.entry_id
-        uid = entry_id.split('.')[-1]
-        title = result.title
-        date_published = result.published
-        abstract = result.summary
-        
-        result_dict = {'uid': uid,
-                       'title': title,
-                       'date_published': date_published,
-                       'abstract': abstract
-                    }
-        df = df.append(result_dict, ignore_index=True)
-
+    df = pd.DataFrame([{'uid': result.entry_id.split('.')[-1],
+                        'title': result.title,
+                        'date_published': result.published,
+                        'abstract': result.summary} for result in search.results()])
     return df
 
 
@@ -55,44 +43,28 @@ def preprocess_data(df: pd.DataFrame):
     return df
 
 
-def run_keybert(df: pd.DataFrame, 
-                ngram_min: int,
-                ngram_max: int,
-                diversity_algo: str, 
-                top_n: int,
-                diversity: float, 
-                nr_candidates: int
-                ):
+def run_keybert(df: pd.DataFrame, ngram_min: int, ngram_max: int, diversity_algo: str, top_n: int, diversity: float, nr_candidates: int):
+    kw_model = KeyBERT(model='all-MiniLM-L6-v2')
+    use_mmr = diversity_algo.lower() == 'mmr'
+    use_maxsum = diversity_algo.lower() == 'maxsum'
+    
     for i, row in df.iterrows():
-        kw_model = KeyBERT(model='all-MiniLM-L6-v2')
         abstract_text = row['abstract']
-        if diversity_algo.lower() == 'mmr':
-            use_mmr, use_maxsum = True, False
-        elif diversity_algo.lower() == 'maxsum':
-            use_mmr, use_maxsum = False, True
-
-        kw_output = kw_model.extract_keywords(abstract_text, 
-                                    keyphrase_ngram_range=(ngram_min, ngram_max), 
-                                    stop_words='english',
-                                    use_mmr=use_mmr, 
-                                    use_maxsum=use_maxsum,
-                                    top_n=top_n,
-                                    diversity=diversity,
-                                    nr_candidates=nr_candidates
-                                    )
+        kw_output = kw_model.extract_keywords(abstract_text,
+                                              keyphrase_ngram_range=(ngram_min, ngram_max),
+                                              stop_words='english',
+                                              use_mmr=use_mmr,
+                                              use_maxsum=use_maxsum,
+                                              top_n=top_n,
+                                              diversity=diversity,
+                                              nr_candidates=nr_candidates)
         df.at[i, 'keywords_and_scores'] = kw_output
-        
-        # Obtain keyword from every keyword-score pair
-        top_kw = []
-        for pair in kw_output:
-            top_kw.append(pair[0])
-        df.at[i, 'keywords'] = top_kw
-
+        df.at[i, 'keywords'] = [pair[0] for pair in kw_output]
     return df
 
 
 def get_keyword_value_counts(df):
-    keywords_count = pd.DataFrame(pd.Series([x for item in df['keywords'] for x in item]).value_counts()).reset_index()
+    keywords_count = pd.Series(df['keywords'].explode()).value_counts().reset_index()
     keywords_count.columns = ['keyword', 'count']
 
     return keywords_count

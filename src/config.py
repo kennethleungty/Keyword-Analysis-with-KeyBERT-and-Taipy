@@ -26,22 +26,11 @@ data_nr_candidates_cfg = Config.configure_data_node(id='nr_candidates', default_
 # ===================
 #   Key Data Nodes
 # ===================
-data_arxiv_search_cfg = Config.configure_data_node(id='data_arxiv_search', 
-                                                   scope=Scope.GLOBAL,
-                                                   cacheable=True)
-data_raw_df_cfg = Config.configure_data_node(id='data_raw_df',
-                                             scope=Scope.GLOBAL,
-                                             cacheable=True)
-data_processed_df_cfg = Config.configure_data_node(id='data_processed_df',
-                                                   scope=Scope.GLOBAL,
-                                                   cacheable=True)
-data_keywords_df_cfg = Config.configure_data_node(id='data_keywords_df',
-                                                  scope=Scope.GLOBAL,
-                                                  cacheable=True)
-
-data_keywords_count_cfg = Config.configure_data_node(id='data_keywords_count',
-                                                     scope=Scope.GLOBAL,
-                                                     cacheable=True)
+data_arxiv_search_cfg = Config.configure_data_node(id='data_arxiv_search')
+data_raw_df_cfg = Config.configure_data_node(id='data_raw_df')
+data_processed_df_cfg = Config.configure_data_node(id='data_processed_df')
+data_keywords_df_cfg = Config.configure_data_node(id='data_keywords_df')
+data_keywords_count_cfg = Config.configure_data_node(id='data_keywords_count')
 
 # =================
 #      Tasks
@@ -105,3 +94,4 @@ scenario_cfg = Config.configure_scenario(id="scenario",
                                          pipeline_configs=[pipeline_data_prep_cfg, 
                                                            pipeline_keyword_analysis_cfg
                                                            ])
+Config.export('config.toml')
