@@ -5,8 +5,9 @@ Last Modified: 19 Mar 2023
 """
 import arxiv
 import pandas as pd
-from keybert import KeyBERT
 import yaml
+from keybert import KeyBERT
+
 
 with open('config.yml') as f:
     cfg = yaml.safe_load(f)
@@ -68,5 +69,3 @@ def get_keyword_value_counts(df):
     keywords_count.columns = ['keyword', 'count']
 
     return keywords_count
-
-

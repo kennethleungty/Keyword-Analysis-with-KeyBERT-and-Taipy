@@ -73,9 +73,6 @@ task_get_kw_count_cfg = Config.configure_task(id='task_count_keywords',
 # =================
 #     Pipelines
 # =================
-# TODO: Split pipeline so that the initial extraction does not change unless number of articles change
-# Don't re-extract when other variables related to KeyBert are amended
-
 pipeline_data_prep_cfg = Config.configure_pipeline(id='pipeline_data_prep',
                                                    task_configs=[task_arxiv_extraction_cfg,
                                                                  task_save_in_df_cfg,
@@ -94,4 +91,3 @@ scenario_cfg = Config.configure_scenario(id="scenario",
                                          pipeline_configs=[pipeline_data_prep_cfg, 
                                                            pipeline_keyword_analysis_cfg
                                                            ])
-Config.export('config.toml')
