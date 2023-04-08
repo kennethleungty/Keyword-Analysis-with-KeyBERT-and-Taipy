@@ -7,7 +7,7 @@ Last Modified: 25 Mar 2023
 from src.config import *
 from src.functions import *
 from pages.analysis_md import *
-from pages.dataframe_md import *
+from pages.data_viewer_md import *
 import taipy as tp
 from taipy.gui import Gui, Icon, navigate
 
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     df = scenario.pipeline_keyword_analysis.data_keywords_df.read()
     df_keywords_count = scenario.pipeline_keyword_analysis.data_keywords_count.read()
 
-    Gui(pages=pages).run(title="Taipy Demo 123", 
+    Gui(pages=pages).run(title="Keyword Extraction and Analysis with KeyBERT and Taipy", 
                          dark_mode=False, 
                          port=8020, 
                          use_reloader=True)

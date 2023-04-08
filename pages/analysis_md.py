@@ -1,12 +1,10 @@
 """
 Module Name: Page Markdown Template (Analysis Page)
 Author: Kenneth Leung
-Last Modified: 19 Mar 2023
+Last Modified: 8 Apr 2023
 """
 import taipy as tp
-
 from taipy.gui import notify
-
 from src.config import scenario_cfg
 
 import yaml
@@ -22,31 +20,14 @@ diversity = cfg['DIVERSITY']
 top_n = cfg['TOP_N']
 nr_candidates = cfg['NR_CANDIDATES']
 
-# Chart types: https://docs.taipy.io/en/latest/manuals/gui/viselements/chart/
-chart_properties = {"type":"bar",
-                    "y":"keyword",
-                    "x":"count",
-                    "orientation": "h",
-                    "layout": {
-                        "barmode": "overlay",
-                        # Set a relevant title for axes
-                        "xaxis": { "title": "Frequency Count"},
-                        "yaxis": { "title": None},
-                        "showlegend": False, # Hide the legend
-                        "title": None,
-                        "margin": {'pad': -15}
-                        }
-                }
 
-
-analysis_page = """
-# Keyword Analysis
-
-This is some placeholder text
+# Input section of dashboard
+input_page = """
+# Keyword Extraction and Analysis with KeyBERT and Taipy
 
 <br/>
 
-<|layout|columns=1 1 1 1 1 1 1|gap=0px|
+<|layout|columns=1 1 1 1 1 1 1|
 <|{query}|input|label=Query Topic|>
 
 <|{ngram_min}|number|label=Min N-gram|>
@@ -57,24 +38,49 @@ This is some placeholder text
 
 <|{diversity}|number|label=Diversity (for MMR)|>
 
-<|{nr_candidates}|number|label=Number of Candidates (for MaxSum)|>
+<|{nr_candidates}|number|label=No. of Candidates (for MaxSum)|>
 
 <|{diversity_algo}|selector|lov={diversity_algo_options}|dropdown|label=Diversity Algorithm|>
-|>
 
+<|Update Analysis|button|on_action=submit_scenario|>
+|>
 <br/> 
+<br/> 
+
 <|{selected_scenario}|selector|lov={scenario_selector}|dropdown|label=Scenario|on_change=synchronize_gui_core|value_by_id|> 
 
-<|Create new scenario|button|on_action=create_scenario|> <|Update Analysis|button|on_action=submit_scenario|>
+<|Save Scenario|button|on_action=create_scenario|> 
 
 <br/>
 
+"""
+
+# Chart types: https://docs.taipy.io/en/latest/manuals/gui/viselements/chart/
+chart_properties = {"type":"bar",
+                    "y":"keyword",
+                    "x":"count",
+                    "orientation": "h",
+                    "layout": {
+                        "xaxis": {"title": "Frequency Count"},
+                        "yaxis": {"title": None},
+                        "showlegend": False, # Hide the legend
+                        "title": None,
+                        "margin": {'pad': -15}
+                        }
+                }
+
+# Output section of dashboard
+output_page = """
 <|layout|columns=1 1|gap=10px|
 <|{df_keywords_count}|table|width=30|page_size=10|height=5|>
 
 <|{df_keywords_count}|chart|properties={chart_properties}|height=80|>
 |>
+
 """
+
+# Combine layout segments
+analysis_page = input_page + output_page
 
 
 # ======= Scenario Setup =========
@@ -85,6 +91,14 @@ def create_scenario(state):
     state.selected_scenario = scenario.id
     notify(state, 'success', 'Scenario created!')
     submit_scenario(state)
+
+
+def update_chart(state):
+    # Select the right scenario and pipeline
+    scenario = tp.get(state.selected_scenario)
+    # Update the chart based on this pipeline
+    state.df = scenario.pipeline_keyword_analysis.data_keywords_df.read()
+    state.df_keywords_count = scenario.pipeline_keyword_analysis.data_keywords_count.read()
 
 
 def submit_scenario(state):
@@ -107,32 +121,14 @@ def submit_scenario(state):
      # Update the chart when we change the scenario
      update_chart(state)
 
-def update_predictions_dataset(state, pipeline):
-    print("Updating predictions dataset...")
-
-    #state.data_processed_ = create_predictions_dataset(pipeline)
-    #state.predictions_dataset = create_predictions_dataset(pipeline)
-
 
 def synchronize_gui_core(state):
     scenario = tp.get(state.selected_scenario)
-
-    # get the information of the selected scenario
-    # and display it on the GUI
+    # get the information of the selected scenario and display it on the GUI
     state.query = scenario.query.read()
     state.ngram_max = scenario.ngram_max.read()
     state.diversity_algo = scenario.diversity_algo.read()
     state.diversity = scenario.diversity.read()
     state.top_n = scenario.top_n.read()
     state.nr_candidates = scenario.nr_candidates.read()
-
     update_chart(state)
-
-
-def update_chart(state):
-    # Select the right scenario and pipeline
-    scenario = tp.get(state.selected_scenario)
-    
-    # Update the chart based on this pipeline
-    state.df = scenario.pipeline_keyword_analysis.data_keywords_df.read()
-    state.df_keywords_count = scenario.pipeline_keyword_analysis.data_keywords_count.read()

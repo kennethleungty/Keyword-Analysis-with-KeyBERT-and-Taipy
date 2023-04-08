@@ -1,6 +1,6 @@
 # Define default parameters
 QUERY: 'artificial intelligence'
-MAX_ABSTRACTS: 4
+MAX_ABSTRACTS: 50
 NGRAM_MIN: 1
 NGRAM_MAX: 1
 TOP_N: 3
