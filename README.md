@@ -1,11 +1,13 @@
 # Keyword Extraction Pipeline and Application with KeyBERT and Taipy
+___
+- To launch the application, run `python main.py` in your CLI
+- Link to TowardsDataScience article for the step-by-step guide: *Coming Soon*
+<br>
 
 <img
   src="assets/screenshot.png"
   style="display: inline-block; width:50 ; margin: 0 auto; width: 800px">
-
-- To launch the application, run `python main.py` in your CLI
-- Link to TowardsDataScience article for the step-by-step guide: *Coming Soon*
+___
 
 ## Context
 - As the amount of textual data from sources like social media, customer reviews, and online platforms continues to grow exponentially, it is important that we are able to make sense of this unstructured data. 
