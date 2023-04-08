@@ -8,7 +8,7 @@
 - Link to TowardsDataScience article for the step-by-step guide: *Coming Soon*
 
 ## Context
-- As the amount of textual data from sources like social media, customer reviews, and online platforms continues to grow exponentially, it is imperative that we are able to make sense of this unstructured data. 
+- As the amount of textual data from sources like social media, customer reviews, and online platforms continues to grow exponentially, it is important that we are able to make sense of this unstructured data. 
 - Keyword extraction and analysis are powerful natural language processing (NLP) techniques that enable us to achieve that.
 - Keyword extraction involves automatically identifying and extracting the most relevant words from a given text, while keyword analysis involves analyzing the keywords to gain insights into the underlying patterns.
 - In this project, we explore building a keyword extraction and analysis pipeline and web app on arXiv abstracts using the powerful tools of KeyBERT and Taipy.
