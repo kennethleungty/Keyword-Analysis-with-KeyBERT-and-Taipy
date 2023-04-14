@@ -71,7 +71,7 @@ chart_properties = {"type":"bar",
 
 # Output section of dashboard
 output_page = """
-<|layout|columns=1 1|gap=12px|
+<|layout|columns=1 1|gap=10px|
 <|{df_keywords_count}|table|width=30|page_size=10|height=20|>
 
 <|{df_keywords_count}|chart|properties={chart_properties}|height=20|>
