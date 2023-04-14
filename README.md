@@ -5,7 +5,7 @@ ___
 <br>
 
 <img
-  src="assets/screenshot.png"
+  src="assets/screenshot_2.png"
   style="display: inline-block; width:50 ; margin: 0 auto; width: 800px">
 ___
 
