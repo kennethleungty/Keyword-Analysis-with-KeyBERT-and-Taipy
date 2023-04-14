@@ -17,8 +17,8 @@ with open('config.yml') as f:
 # =======================
 #       Setup menu
 # =======================
-menu = [("Analysis", Icon('assets/histogram_menu.svg', 'Analysis')),
-        ('Data', Icon('assets/Datanode.svg', 'Data'))]
+menu = [("Analysis", Icon('assets/histogram_menu_2.png', 'Analysis')),
+        ('Data', Icon('assets/data_menu.png', 'Data'))]
 
 page_markdown = """
 <|toggle|theme|>

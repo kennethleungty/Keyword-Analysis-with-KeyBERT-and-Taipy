@@ -64,17 +64,17 @@ chart_properties = {"type":"bar",
                         "xaxis": {"title": "Frequency Count"},
                         "yaxis": {"title": None},
                         "showlegend": False, # Hide the legend
-                        "title": None,
-                        "margin": {'pad': -15}
+                        "title": 'Keyword Frequency Bar Plot',
+                        "margin": {'pad': 0}
                         }
                 }
 
 # Output section of dashboard
 output_page = """
-<|layout|columns=1 1|gap=10px|
-<|{df_keywords_count}|table|width=30|page_size=10|height=5|>
+<|layout|columns=1 1|gap=12px|
+<|{df_keywords_count}|table|width=30|page_size=10|height=20|>
 
-<|{df_keywords_count}|chart|properties={chart_properties}|height=80|>
+<|{df_keywords_count}|chart|properties={chart_properties}|height=20|>
 |>
 
 """
