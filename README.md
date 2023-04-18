@@ -1,7 +1,7 @@
 # Keyword Extraction Pipeline and Application with KeyBERT and Taipy
 ___
 - To launch the application, run `python main.py` in your CLI
-- Link to TowardsDataScience article for the step-by-step guide: *Coming Soon*
+- Link to TowardsDataScience article for the step-by-step guide: https://towardsdatascience.com/arxiv-keyword-extraction-and-analysis-pipeline-with-keybert-and-taipy-2972e81d9fa4
 <br>
 
 <img
